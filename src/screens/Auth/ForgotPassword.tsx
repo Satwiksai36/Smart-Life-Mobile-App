@@ -29,7 +29,7 @@ export const ForgotPassword: React.FC = () => {
   };
 
   return (
-    <div className="bg-mesh min-h-screen flex items-center justify-center p-6 text-[#0b1c30] dark:text-[#f8f9ff]">
+    <div className="flex-grow flex flex-col items-center justify-center overflow-y-auto p-5 bg-mesh">
       <main className="w-full max-w-[420px] mx-auto z-10 relative">
         <div className="text-center mb-8">
           <h1 className="font-display-lg text-4xl font-black text-[#3525cd] dark:text-[#c3c0ff] tracking-tight">

@@ -38,18 +38,18 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div className="bg-mesh min-h-screen flex items-center justify-center p-6 text-[#0b1c30] dark:text-[#f8f9ff]">
-      <main className="w-full max-w-[420px] mx-auto z-10 relative">
+    <div className="flex-grow flex flex-col items-center justify-center overflow-y-auto p-5 bg-mesh">
+      <main className="w-full max-w-[380px] mx-auto z-10 relative">
         {/* Logo Header */}
-        <div className="text-center mb-8">
-          <h1 className="font-display-lg text-4xl font-black text-[#3525cd] dark:text-[#c3c0ff] tracking-tight">
+        <div className="text-center mb-5">
+          <h1 className="text-2xl font-black text-indigo-700 dark:text-indigo-300 tracking-tight">
             SmartLife
           </h1>
-          <p className="font-body-lg text-gray-500 mt-2">Intelligent Living, Simplified.</p>
+          <p className="text-[11px] text-gray-500 mt-0.5">Intelligent Living, Simplified.</p>
         </div>
 
         {/* Login Card */}
-        <div className="glass-card rounded-[24px] p-6 md:p-8 ambient-shadow">
+        <div className="glass-card rounded-[24px] p-5 ambient-shadow">
           <div className="flex justify-center mb-6">
             <div className="w-16 h-16 rounded-full bg-surface-container-high dark:bg-slate-800 flex items-center justify-center shadow-inner">
               <span className="material-symbols-outlined text-4xl text-[#3525cd]" style={{ fontVariationSettings: "'FILL' 1" }}>

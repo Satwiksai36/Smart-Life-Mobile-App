@@ -207,6 +207,15 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [refresh, setRefresh] = useState(0);
 
+  // --- Data Version Guard (bump version to flush stale localStorage data) ---
+  const DATA_VERSION = 'sm_v3_inr';
+  const storedVersion = localStorage.getItem('sm_data_version');
+  if (storedVersion !== DATA_VERSION) {
+    // Clear all stale keys so new seed defaults take effect
+    ['sm_expenses', 'sm_budgets', 'sm_reminders', 'sm_tasks', 'sm_habits', 'sm_notes'].forEach(k => localStorage.removeItem(k));
+    localStorage.setItem('sm_data_version', DATA_VERSION);
+  }
+
   // --- Auth & Session State ---
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
     return localStorage.getItem('sm_isLoggedIn') === 'true';
@@ -740,7 +749,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (totalCategorySpent >= limit) {
       addNotification(
         "🚨 Budget Limit Exceeded!", 
-        `You spent $${totalCategorySpent.toFixed(2)} of your $${limit} budget limit in "${expense.category}"`, 
+        `You spent ₹${totalCategorySpent.toFixed(0)} of your ₹${limit} budget limit in "${expense.category}"`, 
         'expense'
       );
     } else if (totalCategorySpent >= limit * 0.8) {
@@ -953,7 +962,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           }
         ];
       } else if (prompt.includes('budget') || prompt.includes('spend') || prompt.includes('save') || prompt.includes('expense')) {
-        aiText = "I ran analytics on your monthly limits. You have consumed 12% of your Travel budget, but Food is looking a bit high ($6.80 out of $150 limit). I recommend setting a custom budget boundary for Shopping to save $120.";
+        aiText = "I ran analytics on your monthly limits. You have consumed 12% of your Travel budget, but Food is looking a bit high. I recommend reviewing your Shopping category to save on overspend.";
         actions = [
           {
             type: 'budget',
@@ -962,8 +971,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           },
           {
             type: 'budget',
-            label: 'Tighten Food budget to $120',
-            payload: { category: 'Food', amount: 120 }
+            label: 'Tighten Food budget to ₹10,000',
+            payload: { category: 'Food', amount: 10000 }
           }
         ];
       } else if (prompt.includes('habit') || prompt.includes('health') || prompt.includes('streaks')) {

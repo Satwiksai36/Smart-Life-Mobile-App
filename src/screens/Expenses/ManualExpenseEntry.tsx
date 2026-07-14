@@ -72,14 +72,14 @@ export const ManualExpenseEntry: React.FC = () => {
               required
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              placeholder="e.g. 42.50"
+              placeholder="e.g. 1500"
               className="w-full px-4 py-3 rounded-xl glass-input text-sm outline-none font-bold"
             />
           </div>
         </div>
 
         {/* Date, Category, Payment Method */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-sm">
+        <div className="grid grid-cols-2 gap-2">
           <div>
             <label className="block text-xs font-bold text-gray-500 mb-1" htmlFor="date">Transaction Date</label>
             <input 
