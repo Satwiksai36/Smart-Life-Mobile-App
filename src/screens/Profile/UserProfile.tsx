@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigateApp } from '../../context/NavigationContext';
 import { useApp } from '../../context/AppContext';
 
@@ -9,11 +9,31 @@ export const UserProfile: React.FC = () => {
   const [name, setName] = useState(user.name);
   const [bio, setBio] = useState(user.bio);
   const [isEditing, setIsEditing] = useState(false);
+  const [photoUploading, setPhotoUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleUpdate = (e: React.FormEvent) => {
     e.preventDefault();
     updateUser({ name, bio });
     setIsEditing(false);
+  };
+
+  // ── Real photo upload: read as base64 dataURL ──
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Photo must be under 5 MB.');
+      return;
+    }
+    setPhotoUploading(true);
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      updateUser({ photo: dataUrl });
+      setPhotoUploading(false);
+    };
+    reader.readAsDataURL(file);
   };
 
   // Calculations
@@ -31,36 +51,54 @@ export const UserProfile: React.FC = () => {
             <span className="material-symbols-outlined text-xl">arrow_back</span>
           </button>
           <div>
-            <h2 className="font-headline-md text-xl font-black text-primary">Member Profile</h2>
+            <h2 className="text-xl font-black text-indigo-700 dark:text-indigo-300">Member Profile</h2>
             <p className="text-[10px] text-gray-400">Manage account information</p>
           </div>
         </div>
-        
         <button 
           onClick={() => navigate('settings')}
-          className="p-2.5 bg-white/40 dark:bg-slate-800/40 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-white/60 dark:hover:bg-slate-800/60 border border-white/20"
+          className="p-2.5 bg-white/40 dark:bg-slate-800/40 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-white/60 border border-white/20"
         >
           <span className="material-symbols-outlined text-lg">settings</span>
         </button>
       </div>
 
       {/* Main Profile Info Card */}
-      <div className="glass-card rounded-[24px] p-6 space-y-6 text-center">
+      <div className="glass-card rounded-[24px] p-6 space-y-5 text-center">
         
-        {/* User Photo */}
+        {/* User Photo — tap to upload */}
         <div className="relative w-24 h-24 mx-auto">
+          {/* Glow ring */}
+          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-indigo-500 to-cyan-400 opacity-30 blur-md scale-110" />
           <img 
-            alt="User Headshot"
-            className="w-full h-full rounded-full object-cover border-4 border-white dark:border-slate-800 shadow-md"
+            alt="User Photo"
+            className="relative w-full h-full rounded-full object-cover border-4 border-white dark:border-slate-800 shadow-md"
             src={user.photo}
           />
+          {/* Hidden file input */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handlePhotoChange}
+          />
+          {/* Edit button triggers file picker */}
           <button 
-            onClick={() => alert("Simulation: Upload profile image.")}
-            className="absolute bottom-0 right-0 p-1.5 bg-indigo-600 text-white rounded-full flex items-center justify-center border border-white"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={photoUploading}
+            className="absolute bottom-0 right-0 p-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full flex items-center justify-center border-2 border-white shadow-md transition-colors"
           >
-            <span className="material-symbols-outlined text-xs">edit</span>
+            {photoUploading ? (
+              <div className="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <span className="material-symbols-outlined text-xs">photo_camera</span>
+            )}
           </button>
         </div>
+
+        {/* Photo hint */}
+        <p className="text-[9px] text-gray-400 -mt-2">Tap camera icon to change photo</p>
 
         {/* Text descriptions or Editing Form */}
         {isEditing ? (
@@ -83,67 +121,65 @@ export const UserProfile: React.FC = () => {
                 className="w-full px-4 py-2.5 rounded-xl glass-input text-xs outline-none resize-none"
               />
             </div>
-            <div className="flex gap-2">
-              <button 
-                type="button" 
-                onClick={() => setIsEditing(false)} 
-                className="flex-1 py-2 text-xs font-bold bg-white/40 border border-white/20 rounded-xl text-center"
-              >
+            <div className="flex gap-3 pt-2">
+              <button type="button" onClick={() => setIsEditing(false)} className="flex-1 py-2.5 text-xs font-bold text-gray-500 border border-gray-200/50 rounded-xl">
                 Cancel
               </button>
-              <button 
-                type="submit" 
-                className="flex-grow py-2 text-xs font-bold bg-indigo-600 text-white rounded-xl text-center"
-              >
-                Save
+              <button type="submit" className="flex-1 py-2.5 text-xs font-bold text-white bg-indigo-600 rounded-xl shadow-lg shadow-indigo-600/20">
+                Save Changes
               </button>
             </div>
           </form>
         ) : (
-          <div className="space-y-2">
-            <div className="flex gap-1.5 items-center justify-center">
-              <h3 className="font-headline-md text-xl font-black">{user.name}</h3>
-              <span className="text-[8px] font-black text-amber-600 bg-amber-100 dark:bg-amber-950/40 dark:text-amber-400 px-2 py-0.5 rounded-full uppercase">
-                {user.membership}
-              </span>
+          <>
+            <div>
+              <h3 className="text-lg font-black text-gray-800 dark:text-gray-100">{user.name}</h3>
+              <p className="text-xs text-indigo-600 dark:text-indigo-400 font-semibold">{user.email}</p>
+              <p className="text-xs text-gray-500 mt-1 leading-relaxed">{user.bio}</p>
             </div>
-            <p className="text-xs text-gray-400">{user.email}</p>
-            <p className="text-xs text-gray-600 dark:text-gray-300 max-w-[280px] mx-auto italic">
-              "{user.bio}"
-            </p>
-            <button 
+            <button
               onClick={() => setIsEditing(true)}
-              className="px-4 py-1.5 bg-white/40 hover:bg-white/60 text-xs font-bold rounded-xl border border-white/20 transition-all"
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-300 text-xs font-bold rounded-xl border border-indigo-100/40 hover:bg-indigo-100 transition-colors"
             >
-              Edit Details
+              <span className="material-symbols-outlined text-sm">edit</span>
+              Edit Profile
             </button>
-          </div>
+          </>
         )}
       </div>
 
-      {/* Lifefycle metrics */}
-      <div className="glass-card rounded-[24px] p-6 space-y-4">
-        <h3 className="font-bold text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Overall Achievements</h3>
-        
-        <div className="grid grid-cols-3 gap-sm text-center">
-          <div className="bg-white/20 dark:bg-slate-800/10 p-3 rounded-2xl border border-white/10">
-            <span className="material-symbols-outlined text-teal-600 text-xl font-bold">task_alt</span>
-            <div className="text-base font-black mt-1">{completedTasks} Done</div>
-            <span className="text-[8px] text-gray-400 uppercase font-bold mt-0.5">Tasks Cleared</span>
+      {/* Quick Stats */}
+      <div className="grid grid-cols-3 gap-3">
+        {[
+          { icon: 'task_alt', label: 'Tasks Done', val: completedTasks, color: 'text-teal-600', bg: 'bg-teal-50/60 dark:bg-teal-950/20' },
+          { icon: 'local_fire_department', label: 'Best Streak', val: `${maxStreak}d`, color: 'text-orange-500', bg: 'bg-orange-50/60 dark:bg-orange-950/20' },
+          { icon: 'currency_rupee', label: 'Total Spent', val: `₹${totalCost > 999 ? (totalCost/1000).toFixed(1)+'k' : totalCost}`, color: 'text-indigo-600', bg: 'bg-indigo-50/60 dark:bg-indigo-950/20' },
+        ].map(s => (
+          <div key={s.label} className={`glass-card rounded-[18px] p-3 text-center ${s.bg}`}>
+            <span className={`material-symbols-outlined text-xl ${s.color}`} style={{ fontVariationSettings: "'FILL' 1" }}>{s.icon}</span>
+            <p className={`text-sm font-black mt-0.5 ${s.color}`}>{s.val}</p>
+            <p className="text-[8px] text-gray-400 font-bold uppercase">{s.label}</p>
           </div>
+        ))}
+      </div>
 
-          <div className="bg-white/20 dark:bg-slate-800/10 p-3 rounded-2xl border border-white/10">
-            <span className="material-symbols-outlined text-amber-500 text-xl font-bold font-variation-fill">local_fire_department</span>
-            <div className="text-base font-black mt-1">{maxStreak} Days</div>
-            <span className="text-[8px] text-gray-400 uppercase font-bold mt-0.5">Max Streak</span>
-          </div>
-
-          <div className="bg-white/20 dark:bg-slate-800/10 p-3 rounded-2xl border border-white/10">
-            <span className="material-symbols-outlined text-emerald-600 text-xl font-bold">savings</span>
-            <div className="text-base font-black mt-1">₹{totalCost.toFixed(0)} Logged</div>
-            <span className="text-[8px] text-gray-400 uppercase font-bold mt-0.5">Total Spent</span>
-          </div>
-        </div>
+      {/* Account Actions */}
+      <div className="glass-card rounded-[24px] p-4 space-y-1">
+        {[
+          { icon: 'analytics', label: 'View Analytics', action: () => navigate('analytics'), color: 'text-purple-600' },
+          { icon: 'notifications', label: 'Notification Center', action: () => navigate('notifications'), color: 'text-blue-600' },
+          { icon: 'settings', label: 'App Settings', action: () => navigate('settings'), color: 'text-gray-600' },
+        ].map(item => (
+          <button
+            key={item.label}
+            onClick={item.action}
+            className="w-full flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-white/40 dark:hover:bg-slate-800/40 transition-colors"
+          >
+            <span className={`material-symbols-outlined text-xl ${item.color}`}>{item.icon}</span>
+            <span className="text-xs font-bold text-gray-700 dark:text-gray-300 flex-grow text-left">{item.label}</span>
+            <span className="material-symbols-outlined text-sm text-gray-300">chevron_right</span>
+          </button>
+        ))}
       </div>
 
     </div>
