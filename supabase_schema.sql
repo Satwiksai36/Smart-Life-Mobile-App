@@ -1,5 +1,6 @@
 -- ============================================================
 -- SmartLife Database Schema for Supabase / PostgreSQL
+-- VERSION 2 — includes explicit GRANT permissions
 -- ============================================================
 -- HOW TO RUN:
 --   1. Open https://supabase.com/dashboard
@@ -118,16 +119,34 @@ CREATE TABLE IF NOT EXISTS public.notifications (
 );
 CREATE INDEX IF NOT EXISTS notifications_user_id_idx ON public.notifications(user_id);
 
--- ─── ENABLE ROW LEVEL SECURITY (Recommended for production) ─
--- Uncomment these lines once you have Firebase JWT verification set up with Supabase
+-- ─── GRANT FULL ACCESS TO anon AND authenticated ROLES ──────
+-- This is REQUIRED for the Supabase client (using anon key) to read/write
 
--- ALTER TABLE public.reminders ENABLE ROW LEVEL SECURITY;
--- ALTER TABLE public.tasks ENABLE ROW LEVEL SECURITY;
--- ALTER TABLE public.expenses ENABLE ROW LEVEL SECURITY;
--- ALTER TABLE public.budgets ENABLE ROW LEVEL SECURITY;
--- ALTER TABLE public.habits ENABLE ROW LEVEL SECURITY;
--- ALTER TABLE public.notes ENABLE ROW LEVEL SECURITY;
--- ALTER TABLE public.notifications ENABLE ROW LEVEL SECURITY;
+GRANT ALL ON public.reminders      TO anon, authenticated;
+GRANT ALL ON public.tasks          TO anon, authenticated;
+GRANT ALL ON public.expenses       TO anon, authenticated;
+GRANT ALL ON public.budgets        TO anon, authenticated;
+GRANT ALL ON public.habits         TO anon, authenticated;
+GRANT ALL ON public.notes          TO anon, authenticated;
+GRANT ALL ON public.notifications  TO anon, authenticated;
 
--- ─── DONE ───────────────────────────────────────────────────
--- All 7 tables are ready. Run npm run dev and test the app!
+-- Also grant usage on the budgets id sequence
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated;
+
+-- ─── CONNECTION TEST TABLE ───────────────────────────────────
+-- Used to verify Supabase is connected (app pings this on startup)
+
+CREATE TABLE IF NOT EXISTS public.connection_test (
+  id    SERIAL PRIMARY KEY,
+  ping  TEXT DEFAULT 'pong',
+  ts    TIMESTAMPTZ DEFAULT NOW()
+);
+GRANT ALL ON public.connection_test TO anon, authenticated;
+GRANT USAGE, SELECT ON SEQUENCE public.connection_test_id_seq TO anon, authenticated;
+
+-- Insert a test row so SELECT always returns data
+INSERT INTO public.connection_test (ping) VALUES ('pong') ON CONFLICT DO NOTHING;
+
+-- ─── DONE ────────────────────────────────────────────────────
+-- Run this script once. All 8 tables created with correct permissions.
+-- Then restart your app — tasks will sync to Supabase automatically.

@@ -13,6 +13,22 @@ import type {
   Reminder, Task, Expense, Habit, Note, AppNotification
 } from '../context/AppContext';
 
+// ─── CONNECTION TEST ──────────────────────────────────────────
+
+export async function testSupabaseConnection(): Promise<{ ok: boolean; message: string }> {
+  try {
+    const { data, error } = await supabase
+      .from('connection_test')
+      .select('ping')
+      .limit(1);
+    if (error) return { ok: false, message: `Supabase error: ${error.message} (code: ${error.code})` };
+    return { ok: true, message: `Supabase connected ✅ — response: ${JSON.stringify(data)}` };
+  } catch (e: any) {
+    return { ok: false, message: `Network error: ${e.message}` };
+  }
+}
+
+
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 
 function logError(fn: string, error: unknown) {

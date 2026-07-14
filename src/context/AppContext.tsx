@@ -17,6 +17,7 @@ import {
   upsertHabit, removeHabit,
   upsertNote, removeNote,
   upsertNotification, clearAllNotifications,
+  testSupabaseConnection,
 } from '../services/db';
 import { queryAiAssistant, type ChatMessage } from '../services/aiService';
 
@@ -276,6 +277,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setFirebaseUser(fbUser);
         setIsLoggedIn(true);
 
+        // ── Supabase connection diagnostic (check console for result) ──
+        testSupabaseConnection().then(result => {
+          if (result.ok) {
+            console.log('[Supabase]', result.message);
+          } else {
+            console.error('[Supabase ❌ NOT CONNECTED]', result.message);
+            console.error('[Supabase] Fix: Run supabase_schema.sql in your Supabase Dashboard SQL Editor first!');
+          }
+        });
+
         // Sync user profile from Firebase
         const displayName = fbUser.displayName || fbUser.email?.split('@')[0] || 'User';
         const localUser = localStorage.getItem('sm_user');
@@ -387,9 +398,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // ==========================================
 
   // Helper: write to Supabase in background (non-blocking)
-  const syncToDb = async (fn: () => Promise<void>) => {
-    if (!userIdRef.current) return;
-    try { await fn(); } catch (e) { console.warn('[DB Sync]', e); }
+  // Logs full error detail so it's visible in DevTools console
+  const syncToDb = async (fn: () => Promise<void>, label = '') => {
+    if (!userIdRef.current) {
+      console.warn('[DB Sync] Skipped — no Firebase user logged in');
+      return;
+    }
+    try {
+      await fn();
+      if (label) console.log(`[DB Sync ✅] ${label} synced for user ${userIdRef.current}`);
+    } catch (e: any) {
+      const msg = e?.message || JSON.stringify(e);
+      console.error(`[DB Sync ❌] ${label || 'unknown'} — ${msg}`, e);
+      // Show a dismissible in-app warning (won't spam — only on actual errors)
+      setNotifications(prev => [{
+        id: uid('notif'),
+        title: '⚠️ Sync Warning',
+        body: `Could not save to cloud: ${msg.slice(0, 80)}. Data is safe locally.`,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        read: false,
+        category: 'system' as const,
+      }, ...prev.slice(0, 49)]);
+    }
   };
 
   // ── REMINDERS ──────────────────────────────────────────────
