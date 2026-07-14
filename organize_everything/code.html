@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SmartLife Onboarding - Organize Everything</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-highest": "#d3e4fe",
+                      "surface-dim": "#cbdbf5",
+                      "tertiary-container": "#007030",
+                      "secondary-fixed": "#acedff",
+                      "on-tertiary-container": "#63f889",
+                      "tertiary-fixed": "#6bff8f",
+                      "on-secondary-fixed": "#001f26",
+                      "on-primary": "#ffffff",
+                      "surface-bright": "#f8f9ff",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-fixed": "#002109",
+                      "primary": "#3525cd",
+                      "on-secondary-container": "#006172",
+                      "primary-fixed": "#e2dfff",
+                      "on-tertiary-fixed-variant": "#005321",
+                      "tertiary": "#005523",
+                      "inverse-on-surface": "#eaf1ff",
+                      "on-surface-variant": "#464555",
+                      "error": "#ba1a1a",
+                      "primary-fixed-dim": "#c3c0ff",
+                      "outline-variant": "#c7c4d8",
+                      "surface-variant": "#d3e4fe",
+                      "surface-tint": "#4d44e3",
+                      "on-primary-fixed-variant": "#3323cc",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "surface-container": "#e5eeff",
+                      "inverse-surface": "#213145",
+                      "secondary": "#00687a",
+                      "error-container": "#ffdad6",
+                      "on-background": "#0b1c30",
+                      "tertiary-fixed-dim": "#4ae176",
+                      "on-error": "#ffffff",
+                      "secondary-container": "#57dffe",
+                      "surface-container-low": "#eff4ff",
+                      "secondary-fixed-dim": "#4cd7f6",
+                      "on-primary-fixed": "#0f0069",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-container": "#dad7ff",
+                      "surface": "#f8f9ff",
+                      "on-secondary-fixed-variant": "#004e5c",
+                      "outline": "#777587",
+                      "inverse-primary": "#c3c0ff",
+                      "primary-container": "#4f46e5",
+                      "background": "#f8f9ff",
+                      "surface-container-high": "#dce9ff",
+                      "on-surface": "#0b1c30"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "xl": "32px",
+                      "base": "4px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "gutter": "16px",
+                      "lg": "24px",
+                      "container-margin": "20px"
+              },
+              "fontFamily": {
+                      "title-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "title-lg": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-md": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+            },
+          }
+        }
+    </script>
+<style>
+        body {
+            background-image: radial-gradient(circle at top right, #e2dfff 0%, #f8f9ff 40%),
+                              radial-gradient(circle at bottom left, #dce9ff 0%, #f8f9ff 40%);
+            background-attachment: fixed;
+        }
+        
+        /* Glassmorphism utility classes based on guidelines */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            border-radius: 24px;
+        }
+        
+        .glass-fab {
+            background: linear-gradient(135deg, #4f46e5 0%, #57dffe 100%);
+            box-shadow: 0 20px 30px rgba(79, 70, 229, 0.3);
+        }
+        
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-lg min-h-screen flex flex-col antialiased relative overflow-hidden">
+<!-- Ambient background shapes for depth -->
+<div class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-primary-fixed-dim/30 blur-[100px] pointer-events-none"></div>
+<div class="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-secondary-container/20 blur-[120px] pointer-events-none"></div>
+<!-- Note: TopAppBar and BottomNavBar are suppressed here as this is a linear/transactional onboarding screen -->
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col justify-between items-center w-full max-w-[1440px] mx-auto px-container-margin pt-xl pb-lg md:px-lg md:py-[40px] z-10 relative">
+<!-- Top Indicators -->
+<div class="w-full flex justify-center items-center gap-xs mb-lg">
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+<div class="w-8 h-2 rounded-full bg-primary transition-all duration-300"></div>
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+</div>
+<!-- Illustration Area (Bento Grid Style) -->
+<div class="w-full flex-1 flex items-center justify-center mb-xl">
+<div class="w-full max-w-md md:max-w-3xl bento-grid relative">
+<!-- Central Element: Calendar Event -->
+<div class="glass-card col-span-12 md:col-span-8 md:col-start-3 p-lg flex flex-col justify-center items-center relative z-10 transform hover:-translate-y-1 transition-transform duration-300">
+<img class="w-full h-48 md:h-64 object-cover rounded-xl mb-4" data-alt="A clean, minimalist 3D rendering of a modern digital calendar interface floating in mid-air. The scene uses a soft, light-mode palette with crisp whites and subtle indigo and cyan accents. Soft ambient lighting highlights the frosted glass texture of the calendar card, creating a premium, sophisticated aesthetic. The background is a highly blurred, abstract gradient." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtvLak3wmiVZqJrBsUkTzUFuZs3QexxhYPS8eNug2IZpAjHlbIoVqqB4qQIVYSCZg15cQYT7VbWUbzwJVuTwRWT-pDtx9waDs2Y7x19-IIgHRVr71bfas3xHp-zDDVwVBGm1Rduj93CCUgnlUg_tSzu5B6uMNGCCRhdr9iw_-6HYfzpgGBrGWOZRYZidD_u3aKsQKjSbTbDqlTazXgivwvSvoheYfgTt9IQZUz-yiBS458GRbBhw7DZA"/>
+<div class="absolute -top-4 -right-4 glass-card p-sm rounded-full flex items-center justify-center animate-bounce shadow-lg shadow-primary/10">
+<span class="material-symbols-outlined text-primary text-headline-md" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+</div>
+</div>
+<!-- Secondary Element Left: Task List -->
+<div class="glass-card hidden md:flex col-span-4 p-md flex-col justify-start absolute top-10 -left-16 z-0 opacity-80 transform -rotate-6 shadow-xl">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">task_alt</span>
+<span class="font-title-lg text-title-lg text-on-surface">Daily Tasks</span>
+</div>
+<div class="space-y-2">
+<div class="w-full h-8 bg-surface-container/50 rounded-lg"></div>
+<div class="w-3/4 h-8 bg-surface-container/50 rounded-lg"></div>
+<div class="w-5/6 h-8 bg-surface-container/50 rounded-lg"></div>
+</div>
+</div>
+<!-- Secondary Element Right: Receipt Scan -->
+<div class="glass-card hidden md:flex col-span-4 p-md flex-col justify-center items-center absolute bottom-10 -right-16 z-20 transform rotate-3 shadow-2xl">
+<div class="w-16 h-16 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-headline-lg" style="font-variation-settings: 'FILL' 1;">qr_code_scanner</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Scan Ready</span>
+</div>
+</div>
+</div>
+<!-- Typography & Actions -->
+<div class="w-full max-w-md text-center flex flex-col items-center">
+<h1 class="font-display-lg text-display-lg md:font-display-lg md:text-display-lg text-primary font-bold mb-sm tracking-tight">
+                Organize Everything
+            </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-xl px-4">
+                Manage tasks, expenses, and habits in one seamless place.
+            </p>
+<div class="w-full flex flex-col sm:flex-row-reverse gap-4 sm:justify-center items-center">
+<!-- Primary Action (Next) -->
+<button class="w-full sm:w-auto px-xl py-sm bg-primary text-on-primary rounded-full font-label-md text-label-md uppercase tracking-wider hover:bg-on-primary-fixed-variant transition-colors shadow-lg shadow-primary/20 flex items-center justify-center gap-2 group">
+                    Next
+                    <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<!-- Secondary Action (Skip) -->
+<button class="w-full sm:w-auto px-xl py-sm bg-transparent text-on-surface-variant rounded-full font-label-md text-label-md uppercase tracking-wider hover:bg-surface-variant/50 transition-colors">
+                    Skip
+                </button>
+</div>
+</div>
+</main>
+</body></html>

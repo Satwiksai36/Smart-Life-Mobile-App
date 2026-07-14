@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SmartLife Home Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-highest": "#d3e4fe",
+                    "surface-dim": "#cbdbf5",
+                    "tertiary-container": "#007030",
+                    "secondary-fixed": "#acedff",
+                    "on-tertiary-container": "#63f889",
+                    "tertiary-fixed": "#6bff8f",
+                    "on-secondary-fixed": "#001f26",
+                    "on-primary": "#ffffff",
+                    "surface-bright": "#f8f9ff",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed": "#002109",
+                    "primary": "#3525cd",
+                    "on-secondary-container": "#006172",
+                    "primary-fixed": "#e2dfff",
+                    "on-tertiary-fixed-variant": "#005321",
+                    "tertiary": "#005523",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-surface-variant": "#464555",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#c3c0ff",
+                    "outline-variant": "#c7c4d8",
+                    "surface-variant": "#d3e4fe",
+                    "surface-tint": "#4d44e3",
+                    "on-primary-fixed-variant": "#3323cc",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "surface-container": "#e5eeff",
+                    "inverse-surface": "#213145",
+                    "secondary": "#00687a",
+                    "error-container": "#ffdad6",
+                    "on-background": "#0b1c30",
+                    "tertiary-fixed-dim": "#4ae176",
+                    "on-error": "#ffffff",
+                    "secondary-container": "#57dffe",
+                    "surface-container-low": "#eff4ff",
+                    "secondary-fixed-dim": "#4cd7f6",
+                    "on-primary-fixed": "#0f0069",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-container": "#dad7ff",
+                    "surface": "#f8f9ff",
+                    "on-secondary-fixed-variant": "#004e5c",
+                    "outline": "#777587",
+                    "inverse-primary": "#c3c0ff",
+                    "primary-container": "#4f46e5",
+                    "background": "#f8f9ff",
+                    "surface-container-high": "#dce9ff",
+                    "on-surface": "#0b1c30"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "4px",
+                    "xl": "32px",
+                    "base": "4px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "gutter": "16px",
+                    "lg": "24px",
+                    "container-margin": "20px"
+            },
+            "fontFamily": {
+                    "title-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            border-radius: 1.5rem;
+        }
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        .bg-gradient-soft {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e5eeff 100%);
+        }
+        .fab-shadow {
+            box-shadow: 0 20px 30px rgba(79, 70, 229, 0.3);
+        }
+        .fab-gradient {
+            background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-gradient-soft text-on-background font-body-lg min-h-screen pb-24 md:pb-0 overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top App Bar -->
+<header class="bg-surface/40 dark:bg-inverse-surface/40 backdrop-blur-xl docked full-width top-0 sticky border-b border-white/20 dark:border-white/10 shadow-sm flex justify-between items-center w-full px-container-margin py-md z-40 hidden md:flex">
+<div class="flex items-center gap-sm">
+<img alt="User profile photo" class="w-10 h-10 rounded-full object-cover border border-white/50 shadow-sm" data-alt="A professional headshot of a young man with a warm smile, wearing a casual indigo shirt, well-lit in a bright modern home office setting, light soft aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4sbohlB_SOS0FjxpVFgjtIlGjAiilx6Q_WhZjy7IXpPYtMJcU0ne7kLOkwooJCkW7trcOgOZie4HMQ7WtrDfIr0OBZv3HFpWSVMnrHUYtStd1YXPOMteaC5-7nxmuqpL4MaIfWF4ESjowXMkRlVCgOo11ZISepMddLEfGDJFUr91gdGMAdUS9MP3PUeVrLYwSuZ_bQUVNeelxOFRaOAw0PfQ5JjY7girBQymfj2MWaBM8UxdEGILP2g"/>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim tracking-tight">Good morning, Alex 👋</h1>
+</div>
+<button class="p-2 rounded-full hover:bg-surface-variant/20 transition-colors text-on-surface-variant dark:text-outline-variant hover:opacity-80 active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</header>
+<!-- Mobile Top App Bar (Custom for mobile view) -->
+<header class="md:hidden flex justify-between items-center px-container-margin py-md sticky top-0 z-40 bg-surface/80 backdrop-blur-md">
+<div class="flex items-center gap-sm">
+<img alt="User profile photo" class="w-10 h-10 rounded-full object-cover border border-white/50 shadow-sm" data-alt="A professional headshot of a young man with a warm smile, wearing a casual indigo shirt, well-lit in a bright modern home office setting, light soft aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqnI4k2kPemZBLQ0zsJMJRImdWE-xQnKsdAetTqxTCRoGc5DJteh-zDVov_ijZJYv40hP_I-03BiN_TWEt41YoH2IGIqtrP6lR8agu7_X-uiy8Ya1jKlIp6hJQ-LL8rFVlizaQEwHkXPAl_L5sPLEjeA4IckXIsCIWBOeINYm3xc-O251SoKY8rf0la8EXUJ1b7NCl_9Y_AdEn47VfDwKW2hzeHpNH0X5cHgie1Fy4BKWrdSg_T4AzKA"/>
+<h1 class="font-title-lg text-title-lg font-bold text-primary tracking-tight">Good morning, Alex 👋</h1>
+</div>
+<button class="p-2 rounded-full bg-white/50 shadow-sm text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="max-w-[1440px] mx-auto px-container-margin md:px-lg grid grid-cols-4 md:grid-cols-12 gap-gutter py-lg md:py-xl">
+<!-- Left Column (Main Content) -->
+<div class="col-span-4 md:col-span-8 flex flex-col gap-lg">
+<!-- Today's Overview Section -->
+<section>
+<h2 class="font-title-lg text-title-lg text-on-surface mb-sm px-xs">Today's Overview</h2>
+<!-- Horizontal Scroll Container -->
+<div class="flex overflow-x-auto scrollbar-hide gap-gutter pb-xs -mx-container-margin px-container-margin md:mx-0 md:px-0">
+<!-- Card 1: Tasks -->
+<div class="glass-card min-w-[200px] flex-shrink-0 p-lg flex flex-col justify-between">
+<div class="flex justify-between items-start mb-md">
+<div class="p-2 bg-primary/10 rounded-lg text-primary">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">task_alt</span>
+</div>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-xs">Tasks</p>
+<p class="font-headline-md text-headline-md text-on-surface font-bold">5 Pending</p>
+</div>
+</div>
+<!-- Card 2: Habit Streak -->
+<div class="glass-card min-w-[200px] flex-shrink-0 p-lg flex flex-col justify-between">
+<div class="flex justify-between items-start mb-md">
+<div class="p-2 bg-orange-500/10 rounded-lg text-orange-500">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-xs">Habit Streak</p>
+<p class="font-headline-md text-headline-md text-on-surface font-bold">7 Days 🔥</p>
+</div>
+</div>
+<!-- Card 3: Spending -->
+<div class="glass-card min-w-[200px] flex-shrink-0 p-lg flex flex-col justify-between">
+<div class="flex justify-between items-start mb-md">
+<div class="p-2 bg-green-500/10 rounded-lg text-green-600">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">payments</span>
+</div>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-xs">Spending</p>
+<p class="font-headline-md text-headline-md text-on-surface font-bold">$120</p>
+<p class="font-label-md text-label-md text-on-surface-variant mt-1">Today</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Weekly Productivity Chart Section -->
+<section class="mt-md">
+<h2 class="font-title-lg text-title-lg text-on-surface mb-sm px-xs">Weekly Productivity</h2>
+<div class="glass-card p-lg h-64 relative overflow-hidden flex flex-col">
+<div class="flex justify-between items-center mb-md z-10">
+<span class="font-label-md text-label-md text-on-surface-variant">Performance Score</span>
+<span class="font-body-md text-body-md text-primary font-medium flex items-center"><span class="material-symbols-outlined text-[16px] mr-1">trending_up</span> +12%</span>
+</div>
+<!-- Faux Chart Representation using CSS -->
+<div class="flex-grow flex items-end justify-between gap-2 z-10 pt-4">
+<div class="w-full bg-primary/20 rounded-t-sm h-[40%] relative hover:bg-primary/40 transition-colors group">
+<span class="absolute -top-6 left-1/2 transform -translate-x-1/2 font-label-md text-label-md text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">Mon</span>
+</div>
+<div class="w-full bg-primary/30 rounded-t-sm h-[60%] relative hover:bg-primary/50 transition-colors group">
+<span class="absolute -top-6 left-1/2 transform -translate-x-1/2 font-label-md text-label-md text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">Tue</span>
+</div>
+<div class="w-full bg-primary/20 rounded-t-sm h-[30%] relative hover:bg-primary/40 transition-colors group">
+<span class="absolute -top-6 left-1/2 transform -translate-x-1/2 font-label-md text-label-md text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">Wed</span>
+</div>
+<div class="w-full bg-primary/60 rounded-t-sm h-[80%] relative hover:bg-primary/70 transition-colors group">
+<span class="absolute -top-6 left-1/2 transform -translate-x-1/2 font-label-md text-label-md text-primary font-bold opacity-0 group-hover:opacity-100 transition-opacity">Thu</span>
+</div>
+<div class="w-full bg-primary/40 rounded-t-sm h-[50%] relative hover:bg-primary/50 transition-colors group">
+<span class="absolute -top-6 left-1/2 transform -translate-x-1/2 font-label-md text-label-md text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">Fri</span>
+</div>
+<div class="w-full bg-surface-variant/50 rounded-t-sm h-[20%] relative hover:bg-surface-variant/80 transition-colors group">
+<span class="absolute -top-6 left-1/2 transform -translate-x-1/2 font-label-md text-label-md text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">Sat</span>
+</div>
+<div class="w-full bg-surface-variant/50 rounded-t-sm h-[10%] relative hover:bg-surface-variant/80 transition-colors group">
+<span class="absolute -top-6 left-1/2 transform -translate-x-1/2 font-label-md text-label-md text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">Sun</span>
+</div>
+</div>
+<!-- Subtle background gradient for chart area -->
+<div class="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent pointer-events-none rounded-b-[1.5rem]"></div>
+</div>
+</section>
+</div>
+<!-- Right Column (Sidebar Content) -->
+<div class="col-span-4 md:col-span-4 flex flex-col gap-lg">
+<!-- Upcoming Section -->
+<section>
+<div class="flex justify-between items-center mb-sm px-xs">
+<h2 class="font-title-lg text-title-lg text-on-surface">Upcoming</h2>
+<button class="text-primary font-label-md text-label-md hover:underline">View All</button>
+</div>
+<div class="flex flex-col gap-sm">
+<!-- Calendar Event -->
+<div class="glass-card p-md flex items-center gap-md">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high flex flex-col items-center justify-center flex-shrink-0 border border-white/40">
+<span class="font-label-md text-label-md text-error font-bold leading-none">OCT</span>
+<span class="font-title-lg text-title-lg text-on-surface font-bold leading-none mt-1">24</span>
+</div>
+<div class="flex-grow">
+<h3 class="font-body-lg text-body-lg text-on-surface font-medium line-clamp-1">Design Sync with Team</h3>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center mt-1">
+<span class="material-symbols-outlined text-[14px] mr-1">schedule</span> 10:00 AM - 11:30 AM
+                            </p>
+</div>
+</div>
+<!-- Task Event -->
+<div class="glass-card p-md flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined">description</span>
+</div>
+<div class="flex-grow">
+<h3 class="font-body-lg text-body-lg text-on-surface font-medium line-clamp-1">Review Q3 Report</h3>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center mt-1">
+<span class="material-symbols-outlined text-[14px] mr-1">flag</span> High Priority
+                            </p>
+</div>
+<button class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center hover:bg-primary hover:border-primary hover:text-white transition-colors text-transparent">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Floating AI Assistant Button (FAB) -->
+<button class="fixed bottom-[88px] md:bottom-lg right-container-margin md:right-lg w-14 h-14 rounded-full fab-gradient text-white flex items-center justify-center fab-shadow hover:scale-105 active:scale-95 transition-transform z-50 group">
+<span class="material-symbols-outlined text-3xl group-hover:animate-pulse">smart_toy</span>
+</button>
+<!-- Bottom Navigation Bar (Mobile Only) -->
+<nav class="bg-surface/40 dark:bg-inverse-surface/40 backdrop-blur-xl docked full-width bottom-0 rounded-t-xl border-t border-white/20 dark:border-white/10 shadow-lg fixed bottom-0 w-full z-50 flex justify-around items-center px-gutter py-sm pb-safe md:hidden">
+<!-- Home (Active) -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed-dim font-bold after:content-[''] after:w-1 after:h-1 after:bg-primary after:rounded-full after:mt-1 hover:bg-surface-variant/20 transition-colors scale-110 transition-transform duration-300 p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-md text-label-md mt-1">Home</span>
+</a>
+<!-- Tasks -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant/20 transition-colors p-2 rounded-lg hover:opacity-80" href="#">
+<span class="material-symbols-outlined">task_alt</span>
+<span class="font-label-md text-label-md mt-1">Tasks</span>
+</a>
+<!-- Scan -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant/20 transition-colors p-2 rounded-lg hover:opacity-80" href="#">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+<span class="font-label-md text-label-md mt-1">Scan</span>
+</a>
+<!-- Calendar -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant/20 transition-colors p-2 rounded-lg hover:opacity-80" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-label-md text-label-md mt-1">Calendar</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant/20 transition-colors p-2 rounded-lg hover:opacity-80" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md mt-1">Profile</span>
+</a>
+</nav>
+<!-- Desktop Side Navigation (Implicitly replacing Bottom Nav for larger screens) -->
+<!-- Not strictly requested as a sidebar component, but implementing a subtle nav representation for desktop completeness based on the prompt's structural needs -->
+<aside class="hidden md:flex flex-col fixed left-0 top-1/2 transform -translate-y-1/2 bg-surface/50 backdrop-blur-xl border border-white/40 shadow-lg rounded-r-2xl p-2 gap-4 z-40">
+<a class="w-12 h-12 flex items-center justify-center rounded-xl bg-primary-container text-on-primary-container relative group" href="#">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="absolute left-14 bg-inverse-surface text-inverse-on-surface font-label-md text-label-md px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Home</span>
+</a>
+<a class="w-12 h-12 flex items-center justify-center rounded-xl text-on-surface-variant hover:bg-surface-variant/50 transition-colors relative group" href="#">
+<span class="material-symbols-outlined">task_alt</span>
+<span class="absolute left-14 bg-inverse-surface text-inverse-on-surface font-label-md text-label-md px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Tasks</span>
+</a>
+<a class="w-12 h-12 flex items-center justify-center rounded-xl text-on-surface-variant hover:bg-surface-variant/50 transition-colors relative group" href="#">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+<span class="absolute left-14 bg-inverse-surface text-inverse-on-surface font-label-md text-label-md px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Scan</span>
+</a>
+<a class="w-12 h-12 flex items-center justify-center rounded-xl text-on-surface-variant hover:bg-surface-variant/50 transition-colors relative group" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="absolute left-14 bg-inverse-surface text-inverse-on-surface font-label-md text-label-md px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Calendar</span>
+</a>
+<a class="w-12 h-12 flex items-center justify-center rounded-xl text-on-surface-variant hover:bg-surface-variant/50 transition-colors relative group" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="absolute left-14 bg-inverse-surface text-inverse-on-surface font-label-md text-label-md px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Profile</span>
+</a>
+</aside>
+</body></html>
