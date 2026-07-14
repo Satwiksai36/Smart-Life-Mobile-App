@@ -39,7 +39,7 @@ import { UserProfile } from './screens/Profile/UserProfile';
 import { Settings } from './screens/Profile/Settings';
 
 const AppContent: React.FC = () => {
-  const { isLoggedIn, settings, logout } = useApp();
+  const { isLoggedIn, isAuthLoading, settings, logout } = useApp();
   const { currentRoute, navigate, resetTo } = useNavigateApp();
   const [showMobileMoreSheet, setShowMobileMoreSheet] = useState(false);
 
@@ -70,11 +70,16 @@ const AppContent: React.FC = () => {
     'settings'
   ];
 
+  // While Firebase checks session, show Splash to avoid login flash
   useEffect(() => {
+    if (isAuthLoading) return;
     if (!isLoggedIn && authRequiredScreens.includes(currentRoute.name)) {
       resetTo('login');
     }
-  }, [isLoggedIn, currentRoute.name, resetTo]);
+  }, [isLoggedIn, isAuthLoading, currentRoute.name, resetTo]);
+
+  // Show Splash while Firebase resolves auth state
+  if (isAuthLoading) return <Splash />;
 
   // Render Screen Helper
   const renderScreen = () => {
@@ -303,7 +308,7 @@ const AppContent: React.FC = () => {
 
                 <button
                   onClick={() => {
-                    logout();
+                    logout().catch(console.error);
                     setShowMobileMoreSheet(false);
                     resetTo('login');
                   }}
