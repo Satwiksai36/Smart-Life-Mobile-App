@@ -29,10 +29,12 @@ export async function testSupabaseConnection(): Promise<{ ok: boolean; message: 
 }
 
 
-// ─── HELPERS ─────────────────────────────────────────────────────────────────
-
-function logError(fn: string, error: unknown) {
-  console.warn(`[DB:${fn}]`, error);
+function logError(fn: string, error: any) {
+  const code = error?.code || 'unknown';
+  const msg = error?.message || JSON.stringify(error);
+  const details = error?.details || '';
+  const hint = error?.hint || '';
+  console.warn(`[DB:${fn} ❌] Code: ${code} | Message: ${msg} | Details: ${details} | Hint: ${hint}`, error);
 }
 
 // ─── REMINDERS ───────────────────────────────────────────────────────────────
@@ -62,12 +64,12 @@ export async function upsertReminder(userId: string, reminder: Reminder): Promis
     completed: reminder.completed,
     created_at: reminder.createdAt,
   });
-  if (error) logError('upsertReminder', error);
+  if (error) { logError('upsertReminder', error); throw error; }
 }
 
 export async function removeReminder(id: string): Promise<void> {
   const { error } = await supabase.from('reminders').delete().eq('id', id);
-  if (error) logError('removeReminder', error);
+  if (error) { logError('removeReminder', error); throw error; }
 }
 
 // ─── TASKS ───────────────────────────────────────────────────────────────────
@@ -104,12 +106,12 @@ export async function upsertTask(userId: string, task: Task): Promise<void> {
     attachments: task.attachments,
     created_at: task.createdAt,
   });
-  if (error) logError('upsertTask', error);
+  if (error) { logError('upsertTask', error); throw error; }
 }
 
 export async function removeTask(id: string): Promise<void> {
   const { error } = await supabase.from('tasks').delete().eq('id', id);
-  if (error) logError('removeTask', error);
+  if (error) { logError('removeTask', error); throw error; }
 }
 
 // ─── EXPENSES ────────────────────────────────────────────────────────────────
@@ -144,12 +146,12 @@ export async function upsertExpense(userId: string, expense: Expense): Promise<v
     ocr_processed: expense.ocrProcessed || false,
     created_at: expense.createdAt,
   });
-  if (error) logError('upsertExpense', error);
+  if (error) { logError('upsertExpense', error); throw error; }
 }
 
 export async function removeExpense(id: string): Promise<void> {
   const { error } = await supabase.from('expenses').delete().eq('id', id);
-  if (error) logError('removeExpense', error);
+  if (error) { logError('removeExpense', error); throw error; }
 }
 
 // ─── BUDGETS ─────────────────────────────────────────────────────────────────
@@ -171,7 +173,7 @@ export async function upsertBudget(userId: string, category: string, amount: num
     category,
     amount,
   }, { onConflict: 'user_id,category' });
-  if (error) logError('upsertBudget', error);
+  if (error) { logError('upsertBudget', error); throw error; }
 }
 
 // ─── HABITS ──────────────────────────────────────────────────────────────────
@@ -206,12 +208,12 @@ export async function upsertHabit(userId: string, habit: Habit): Promise<void> {
     longest_streak: habit.longestStreak,
     created_at: habit.createdAt,
   });
-  if (error) logError('upsertHabit', error);
+  if (error) { logError('upsertHabit', error); throw error; }
 }
 
 export async function removeHabit(id: string): Promise<void> {
   const { error } = await supabase.from('habits').delete().eq('id', id);
-  if (error) logError('removeHabit', error);
+  if (error) { logError('removeHabit', error); throw error; }
 }
 
 // ─── NOTES ───────────────────────────────────────────────────────────────────
@@ -242,12 +244,12 @@ export async function upsertNote(userId: string, note: Note): Promise<void> {
     images: note.images,
     updated_at: note.updatedAt,
   });
-  if (error) logError('upsertNote', error);
+  if (error) { logError('upsertNote', error); throw error; }
 }
 
 export async function removeNote(id: string): Promise<void> {
   const { error } = await supabase.from('notes').delete().eq('id', id);
-  if (error) logError('removeNote', error);
+  if (error) { logError('removeNote', error); throw error; }
 }
 
 // ─── NOTIFICATIONS ────────────────────────────────────────────────────────────
@@ -273,12 +275,12 @@ export async function upsertNotification(userId: string, notif: AppNotification)
     read: notif.read,
     category: notif.category,
   });
-  if (error) logError('upsertNotification', error);
+  if (error) { logError('upsertNotification', error); throw error; }
 }
 
 export async function clearAllNotifications(userId: string): Promise<void> {
   const { error } = await supabase.from('notifications').delete().eq('user_id', userId);
-  if (error) logError('clearAllNotifications', error);
+  if (error) { logError('clearAllNotifications', error); throw error; }
 }
 
 // ─── LOAD ALL (called on login) ──────────────────────────────────────────────

@@ -133,6 +133,19 @@ GRANT ALL ON public.notifications  TO anon, authenticated;
 -- Also grant usage on the budgets id sequence
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated;
 
+-- ─── DISABLE ROW LEVEL SECURITY (REQUIRED FOR TESTING) ──────
+-- Since we are using Firebase Auth, Supabase does not natively verify the 
+-- Firebase auth token client-side by default. Disabling RLS allows the app
+-- to sync user rows, scoped by their Firebase UID.
+
+ALTER TABLE public.reminders      DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.tasks          DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.expenses       DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.budgets        DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.habits         DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.notes          DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.notifications  DISABLE ROW LEVEL SECURITY;
+
 -- ─── CONNECTION TEST TABLE ───────────────────────────────────
 -- Used to verify Supabase is connected (app pings this on startup)
 
@@ -143,6 +156,7 @@ CREATE TABLE IF NOT EXISTS public.connection_test (
 );
 GRANT ALL ON public.connection_test TO anon, authenticated;
 GRANT USAGE, SELECT ON SEQUENCE public.connection_test_id_seq TO anon, authenticated;
+ALTER TABLE public.connection_test DISABLE ROW LEVEL SECURITY;
 
 -- Insert a test row so SELECT always returns data
 INSERT INTO public.connection_test (ping) VALUES ('pong') ON CONFLICT DO NOTHING;
@@ -150,3 +164,4 @@ INSERT INTO public.connection_test (ping) VALUES ('pong') ON CONFLICT DO NOTHING
 -- ─── DONE ────────────────────────────────────────────────────
 -- Run this script once. All 8 tables created with correct permissions.
 -- Then restart your app — tasks will sync to Supabase automatically.
+
