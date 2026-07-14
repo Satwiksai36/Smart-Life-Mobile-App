@@ -78,7 +78,7 @@ export const CalendarView: React.FC = () => {
   const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   return (
-    <div className="flex-1 flex flex-col min-h-screen px-container-margin md:px-lg py-md space-y-md pb-24 md:pb-6 select-none">
+    <div className="flex-grow flex flex-col px-4 py-4 space-y-4 pb-24 select-none">
       
       {/* Header */}
       <div className="flex justify-between items-center">
@@ -187,7 +187,7 @@ export const CalendarView: React.FC = () => {
       )}
 
       {/* Selected Day Agenda Lists */}
-      <div className="glass-card rounded-[24px] p-6 flex-1 flex flex-col min-h-[250px]">
+      <div className="glass-card rounded-[24px] p-6">
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-bold text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">
             Agenda for {selectedDate === '2026-07-14' ? 'Today' : selectedDate}
@@ -195,7 +195,7 @@ export const CalendarView: React.FC = () => {
           <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wide">{selectedDateItems.length} events planned</span>
         </div>
 
-        <div className="flex-1 space-y-3 overflow-y-auto scrollbar-hide">
+        <div className="space-y-3 scrollbar-hide">
           {selectedDateItems.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center text-gray-400 py-10">
               <span className="material-symbols-outlined text-4xl mb-2 opacity-55">event_busy</span>

@@ -24,7 +24,7 @@ export const ExpenseDashboard: React.FC = () => {
   const categories = Object.keys(budgets);
 
   return (
-    <div className="flex-1 flex flex-col min-h-screen px-container-margin md:px-lg py-md space-y-md pb-24 md:pb-6 select-none">
+    <div className="flex-grow flex flex-col px-4 py-4 space-y-4 pb-24 select-none">
       
       {/* Header */}
       <div className="flex justify-between items-center">
@@ -134,7 +134,7 @@ export const ExpenseDashboard: React.FC = () => {
       <div className="glass-card rounded-[24px] p-6 flex flex-col min-h-[300px]">
         <h3 className="font-bold text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">Recent Expenses</h3>
         
-        <div className="flex-1 space-y-3 overflow-y-auto scrollbar-hide max-h-[320px]">
+        <div className="space-y-3 scrollbar-hide">
           {monthlyExpenses.length === 0 ? (
             <div className="h-40 flex flex-col items-center justify-center text-center text-gray-400">
               <span className="material-symbols-outlined text-4xl mb-2">payments</span>

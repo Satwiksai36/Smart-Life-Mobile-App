@@ -22,7 +22,7 @@ export const UserProfile: React.FC = () => {
   const totalCost = expenses.reduce((s, e) => s + e.amount, 0);
 
   return (
-    <div className="flex-1 flex flex-col min-h-screen px-container-margin md:px-lg py-md space-y-md pb-24 md:pb-6 select-none">
+    <div className="flex-grow flex flex-col px-4 py-4 space-y-4 pb-24 select-none">
       
       {/* Header */}
       <div className="flex justify-between items-center mb-2">

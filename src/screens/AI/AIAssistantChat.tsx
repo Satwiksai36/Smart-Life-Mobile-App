@@ -40,11 +40,11 @@ export const AIAssistantChat: React.FC = () => {
   ];
 
   return (
-    <div className="flex-1 flex flex-col min-h-screen pb-24 md:pb-6 relative select-none">
+    <div className="flex-grow flex flex-col relative select-none">
       
       {/* Header */}
-      <header className="flex justify-between items-center px-container-margin md:px-lg py-md bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl border-b border-white/20 dark:border-slate-800/20 sticky top-0 z-30 shadow-sm">
-        <div className="flex items-center gap-sm">
+      <header className="flex justify-between items-center px-4 py-3 bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl border-b border-white/20 dark:border-slate-800/20 sticky top-0 z-30 shadow-sm flex-shrink-0">
+        <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#3525cd] to-[#06b6d4] text-white flex items-center justify-center shadow-md animate-pulse">
             <span className="material-symbols-outlined font-bold text-xl">psychology</span>
           </div>
@@ -66,8 +66,8 @@ export const AIAssistantChat: React.FC = () => {
         </button>
       </header>
 
-      {/* Chat Messages Panel */}
-      <div className="flex-1 overflow-y-auto px-container-margin md:px-lg py-md space-y-md max-h-[calc(100vh-210px)] scrollbar-hide pb-20">
+      {/* Chat Messages Panel — internal scroll */}
+      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 scrollbar-hide pb-4">
         {chatHistory.map((msg, idx) => {
           const isAI = msg.sender === 'ai';
           return (

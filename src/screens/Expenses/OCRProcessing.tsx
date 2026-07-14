@@ -28,7 +28,7 @@ export const OCRProcessing: React.FC = () => {
   }, [imageName, simulatedOcrScan, navigate]);
 
   return (
-    <div className="flex-1 flex flex-col min-h-screen items-center justify-center bg-slate-950 text-white p-6 relative">
+    <div className="flex-grow flex flex-col items-center justify-center bg-slate-950 text-white p-6 relative">
       
       <main className="w-full max-w-[400px] text-center z-10 glass-card rounded-[32px] p-8 border border-white/10 relative overflow-hidden bg-slate-900/80">
         

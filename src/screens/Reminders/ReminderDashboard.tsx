@@ -23,7 +23,7 @@ export const ReminderDashboard: React.FC = () => {
   });
 
   return (
-    <div className="flex-1 flex flex-col min-h-screen px-container-margin md:px-lg py-md space-y-md pb-24 md:pb-6 select-none">
+    <div className="flex-grow flex flex-col px-4 py-4 space-y-4 pb-24 select-none">
       
       {/* Header */}
       <div className="flex justify-between items-center">
@@ -104,8 +104,8 @@ export const ReminderDashboard: React.FC = () => {
       </div>
 
       {/* Reminders List */}
-      <div className="glass-card rounded-[24px] p-6 flex-1 flex flex-col min-h-[300px]">
-        <div className="flex-1 space-y-3 overflow-y-auto scrollbar-hide">
+      <div className="glass-card rounded-[24px] p-6">
+        <div className="space-y-3 scrollbar-hide">
           {filteredReminders.length === 0 ? (
             <div className="h-48 flex flex-col items-center justify-center text-center text-gray-400">
               <span className="material-symbols-outlined text-5xl mb-2">notifications_off</span>
