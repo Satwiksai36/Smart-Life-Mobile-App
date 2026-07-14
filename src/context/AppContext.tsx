@@ -208,11 +208,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [refresh, setRefresh] = useState(0);
 
   // --- Data Version Guard (bump version to flush stale localStorage data) ---
-  const DATA_VERSION = 'sm_v3_inr';
+  const DATA_VERSION = 'sm_v4_clean';
   const storedVersion = localStorage.getItem('sm_data_version');
   if (storedVersion !== DATA_VERSION) {
-    // Clear all stale keys so new seed defaults take effect
-    ['sm_expenses', 'sm_budgets', 'sm_reminders', 'sm_tasks', 'sm_habits', 'sm_notes'].forEach(k => localStorage.removeItem(k));
+    // Clear ALL data keys so app starts completely empty
+    ['sm_expenses', 'sm_budgets', 'sm_reminders', 'sm_tasks', 'sm_habits', 'sm_notes', 'sm_chatHistory', 'sm_notifications', 'sm_isLoggedIn', 'sm_user'].forEach(k => localStorage.removeItem(k));
     localStorage.setItem('sm_data_version', DATA_VERSION);
   }
 
@@ -243,189 +243,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // --- Reminders State ---
   const [reminders, setReminders] = useState<Reminder[]>(() => {
     const saved = localStorage.getItem('sm_reminders');
-    if (saved) return JSON.parse(saved);
-    
-    // Seed default reminders (Today is assumed 2026-07-14)
-    return [
-      {
-        id: 'r1',
-        title: 'Take Multivitamins & Omega-3',
-        category: 'Medicines',
-        dueDate: '2026-07-14',
-        dueTime: '09:00',
-        priority: 'high',
-        recurrence: 'daily',
-        notification: true,
-        notes: 'Take after eating breakfast.',
-        completed: false,
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: 'r2',
-        title: 'Stitch Team Sync Meeting',
-        category: 'Meetings',
-        dueDate: '2026-07-14',
-        dueTime: '14:30',
-        priority: 'medium',
-        recurrence: 'weekly',
-        notification: true,
-        notes: 'Discuss responsive layouts and design token conversion.',
-        completed: false,
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: 'r3',
-        title: 'Renew Cloud Hosting Subscription',
-        category: 'Subscriptions',
-        dueDate: '2026-07-18',
-        dueTime: '10:00',
-        priority: 'high',
-        recurrence: 'monthly',
-        notification: true,
-        notes: 'Card ending in 4242. Estimated ₹3,900.',
-        completed: false,
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: 'r4',
-        title: 'Mom\'s Birthday Gift',
-        category: 'Birthdays',
-        dueDate: '2026-07-25',
-        dueTime: '12:00',
-        priority: 'medium',
-        recurrence: 'yearly',
-        notification: true,
-        notes: 'Send flowers and handwritten card.',
-        completed: false,
-        createdAt: new Date().toISOString()
-      }
-    ];
+    return saved ? JSON.parse(saved) : [];
   });
 
   // --- Tasks State ---
   const [tasks, setTasks] = useState<Task[]>(() => {
     const saved = localStorage.getItem('sm_tasks');
-    if (saved) return JSON.parse(saved);
-
-    return [
-      {
-        id: 't1',
-        title: 'Define Design Tokens System',
-        dueDate: '2026-07-12',
-        dueTime: '17:00',
-        priority: 'high',
-        status: 'completed',
-        notes: 'Export colors, typography, margins and radius profiles from DESIGN.md',
-        subtasks: [
-          { id: 'ts1', title: 'Extract color hex values', completed: true },
-          { id: 'ts2', title: 'Define layout rhythm spacings', completed: true },
-          { id: 'ts3', title: 'Set up glassmorphism classes in Tailwind', completed: true }
-        ],
-        attachments: [{ name: 'BrandSpecs_v1.pdf', size: '2.4 MB' }],
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: 't2',
-        title: 'Initialize SmartLife Shell App',
-        dueDate: '2026-07-14',
-        dueTime: '13:00',
-        priority: 'high',
-        status: 'in_progress',
-        notes: 'Setup project configurations, PostCSS, global styles and routing mechanics.',
-        subtasks: [
-          { id: 'ts4', title: 'Write package.json and config files', completed: true },
-          { id: 'ts5', title: 'Write global index.css rules', completed: true },
-          { id: 'ts6', title: 'Build persistent context database', completed: false }
-        ],
-        attachments: [],
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: 't3',
-        title: 'Develop OCR Simulator & Screens',
-        dueDate: '2026-07-15',
-        dueTime: '18:00',
-        priority: 'medium',
-        status: 'todo',
-        notes: 'Implement receipt uploader, scan animations, and manual entry forms.',
-        subtasks: [
-          { id: 'ts7', title: 'Design laser scan moving line effect', completed: false },
-          { id: 'ts8', title: 'Create receipt pre-filler mock data database', completed: false },
-          { id: 'ts9', title: 'Hook scanner up to Expenses context array', completed: false }
-        ],
-        attachments: [],
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: 't4',
-        title: 'Refine Heatmap Calendar Visuals',
-        dueDate: '2026-07-20',
-        dueTime: '12:00',
-        priority: 'low',
-        status: 'todo',
-        notes: 'Aesthetic checks to align grid squares with GitHub-like streaks.',
-        subtasks: [
-          { id: 'ts10', title: 'Ensure light/dark support for green shades', completed: false }
-        ],
-        attachments: [],
-        createdAt: new Date().toISOString()
-      }
-    ];
+    return saved ? JSON.parse(saved) : [];
   });
 
   // --- Expenses & Budgets State ---
   const [expenses, setExpenses] = useState<Expense[]>(() => {
     const saved = localStorage.getItem('sm_expenses');
-    if (saved) return JSON.parse(saved);
-
-    return [
-      {
-        id: 'e1',
-        merchant: 'Starbucks Coffee',
-        date: '2026-07-12',
-        amount: 540,
-        gst: 28,
-        tax: 12,
-        paymentMethod: 'Credit Card',
-        category: 'Food',
-        items: [
-          { name: 'Iced Caramel Macchiato', quantity: 1, price: 420 },
-          { name: 'Butter Croissant', quantity: 1, price: 120 }
-        ],
-        notes: 'Morning pick-me-up during design research.',
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: 'e2',
-        merchant: 'Uber Rides Inc',
-        date: '2026-07-13',
-        amount: 1950,
-        gst: 98,
-        tax: 60,
-        paymentMethod: 'Google Pay',
-        category: 'Travel',
-        items: [
-          { name: 'Comfort Ride - Home to Office', quantity: 1, price: 1950 }
-        ],
-        notes: 'Commute to core team meeting.',
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: 'e3',
-        merchant: 'Vercel Pro hosting',
-        date: '2026-07-10',
-        amount: 3900,
-        gst: 196,
-        tax: 124,
-        paymentMethod: 'Credit Card',
-        category: 'Bills',
-        items: [
-          { name: 'Vercel Team Plan Subscription', quantity: 1, price: 3900 }
-        ],
-        notes: 'Monthly server renewals.',
-        createdAt: new Date().toISOString()
-      }
-    ];
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [budgets, setBudgets] = useState<BudgetLimits>(() => {
@@ -443,112 +273,23 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // --- Habits State ---
   const [habits, setHabits] = useState<Habit[]>(() => {
     const saved = localStorage.getItem('sm_habits');
-    if (saved) return JSON.parse(saved);
-
-    // Seeding check-ins for the last few days (Assume today is 2026-07-14)
-    return [
-      {
-        id: 'h1',
-        name: 'Hydrate 3L Water',
-        icon: 'water_drop',
-        frequency: 'daily',
-        priority: 'high',
-        targetGoal: 7,
-        history: {
-          '2026-07-10': true,
-          '2026-07-11': true,
-          '2026-07-12': true,
-          '2026-07-13': true,
-          '2026-07-14': true
-        },
-        streak: 5,
-        longestStreak: 12,
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: 'h2',
-        name: 'Read Books 20m',
-        icon: 'menu_book',
-        frequency: 'daily',
-        priority: 'medium',
-        targetGoal: 5,
-        history: {
-          '2026-07-10': true,
-          '2026-07-11': true,
-          '2026-07-13': true,
-          '2026-07-14': true
-        },
-        streak: 2,
-        longestStreak: 8,
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: 'h3',
-        name: 'Gym Workout Routine',
-        icon: 'fitness_center',
-        frequency: 'weekly',
-        priority: 'high',
-        targetGoal: 3,
-        history: {
-          '2026-07-11': true,
-          '2026-07-13': true
-        },
-        streak: 2,
-        longestStreak: 4,
-        createdAt: new Date().toISOString()
-      }
-    ];
+    return saved ? JSON.parse(saved) : [];
   });
 
   // --- Notes State ---
   const [notes, setNotes] = useState<Note[]>(() => {
     const saved = localStorage.getItem('sm_notes');
-    if (saved) return JSON.parse(saved);
-
-    return [
-      {
-        id: 'n1',
-        title: 'Aura Productivity Advice 💡',
-        content: `1. Time-blocking for deep work.\n2. Keep habits to under 3 major routines per day to avoid burnout.\n3. Track expenses at point of purchase to keep budget in focus.\n4. Review analytics every Sunday to map completion efficiency.`,
-        color: 'bg-emerald-50/70 dark:bg-emerald-950/20 border-emerald-100 dark:border-emerald-900/30 text-emerald-900 dark:text-emerald-300',
-        pinned: true,
-        voiceNotes: [],
-        images: [],
-        updatedAt: new Date().toISOString()
-      },
-      {
-        id: 'n2',
-        title: 'Weekly Grocery List 🛒',
-        content: `- Organic avocados\n- Oat milk (unsweetened)\n- Chia seeds & Greek yogurt\n- Whole wheat sourdough bread\n- Organic dark chocolate (85% Kakao)\n- Farm fresh eggs`,
-        color: 'bg-amber-50/70 dark:bg-amber-950/20 border-amber-100 dark:border-amber-900/30 text-amber-900 dark:text-amber-300',
-        pinned: false,
-        voiceNotes: ['mock_voice_1.wav'],
-        images: [],
-        updatedAt: new Date().toISOString()
-      },
-      {
-        id: 'n3',
-        title: 'AI Assistant Prompts to Try 🤖',
-        content: `- Aura, suggest a 5-day study plan for exams\n- Aura, analyze my budget improvements\n- Aura, recommend habits for stress reduction\n- Aura, suggest tomorrow's agenda`,
-        color: 'bg-indigo-50/70 dark:bg-indigo-950/20 border-indigo-100 dark:border-indigo-900/30 text-indigo-900 dark:text-indigo-300',
-        pinned: false,
-        voiceNotes: [],
-        images: [],
-        updatedAt: new Date().toISOString()
-      }
-    ];
+    return saved ? JSON.parse(saved) : [];
   });
 
   // --- AI Chat History State ---
   const [chatHistory, setChatHistory] = useState<Message[]>(() => {
     const saved = localStorage.getItem('sm_chatHistory');
-    if (saved) return JSON.parse(saved);
-
-    return [
+    return saved ? JSON.parse(saved) : [
       {
         sender: 'ai',
-        text: "Hello Alex! I am Aura, your AI Productivity & Life Coach. How can I help you optimize your schedule, budget, or habits today? 🚀",
-        timestamp: '10:00 AM'
+        text: "Hi! I'm Aura, your AI Productivity Coach. How can I help you today? 🚀",
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }
     ];
   });
@@ -556,34 +297,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // --- Notifications State ---
   const [notifications, setNotifications] = useState<AppNotification[]>(() => {
     const saved = localStorage.getItem('sm_notifications');
-    if (saved) return JSON.parse(saved);
-
-    return [
-      {
-        id: 'nt1',
-        title: 'Daily Medication Alert',
-        body: 'Reminder: Take Multivitamins & Omega-3 (Scheduled for 9:00 AM)',
-        timestamp: '9:00 AM',
-        read: false,
-        category: 'reminder'
-      },
-      {
-        id: 'nt2',
-        title: 'Task Due Soon',
-        body: 'Your task "Initialize SmartLife Shell App" is due in 3 hours.',
-        timestamp: '10:00 AM',
-        read: false,
-        category: 'task'
-      },
-      {
-        id: 'nt3',
-        title: 'Budget Alert: Travel Category',
-        body: 'Warning: You have used 12.2% of your Travel budget this week.',
-        timestamp: 'Yesterday',
-        read: true,
-        category: 'expense'
-      }
-    ];
+    return saved ? JSON.parse(saved) : [];
   });
 
   // --- OCR State ---

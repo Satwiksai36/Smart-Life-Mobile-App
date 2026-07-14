@@ -37,8 +37,8 @@ export const Splash: React.FC = () => {
   return (
     <div className="bg-mesh min-h-screen text-[#0b1c30] dark:text-[#f8f9ff] flex flex-col items-center justify-center p-6 relative">
       <div className="absolute inset-0 w-full h-full -z-10 pointer-events-none opacity-40">
-        <div 
-          className="w-full h-full bg-cover bg-center" 
+        <div
+          className="w-full h-full bg-cover bg-center"
           style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCDT08GaMfNOVtAO_v3EN9UoobVgmgQoTq8s2IbxJb15jABLQHyp-lvLjasaYniSRG1VqLvQHgPfS-Dx9AwLwcwhnve59n1IY14onuhp7JD6MdT_u6fJvw0Mm_pd13c7iWggGeXiu3KA_dhIu8Vf1TP-cdA0u69pgBhZJt0glIBl0HmBBsHwKzxgOTf7wWjfLWE-n0FsPsNNVGxmiJKNeqrv4dWKcvPw65Lmpm4e88k_yS37n7kxtVRQg')" }}
         />
       </div>
@@ -59,7 +59,7 @@ export const Splash: React.FC = () => {
 
         {/* Loading Progress Bar */}
         <div className="w-full bg-gray-200/50 dark:bg-gray-700/50 h-2 rounded-full overflow-hidden mb-4">
-          <div 
+          <div
             className="h-full bg-gradient-to-r from-[#3525cd] to-[#06b6d4] transition-all duration-100 ease-out"
             style={{ width: `${progress}%` }}
           />
