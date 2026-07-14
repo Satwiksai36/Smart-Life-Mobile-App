@@ -11,30 +11,32 @@ export const Login: React.FC = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Map Firebase error codes → friendly messages
+  const getFirebaseError = (code: string): string => {
+    switch (code) {
+      case 'auth/user-not-found':       return 'No account found with this email.';
+      case 'auth/wrong-password':        return 'Incorrect password. Please try again.';
+      case 'auth/invalid-credential':    return 'Invalid email or password.';
+      case 'auth/invalid-email':         return 'Please enter a valid email address.';
+      case 'auth/too-many-requests':     return 'Too many failed attempts. Please wait a moment.';
+      case 'auth/network-request-failed': return 'Network error. Check your internet connection.';
+      default: return 'Login failed. Please try again.';
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-
-    if (!email || !password) {
-      setError('Please fill in all fields.');
-      return;
-    }
-
-    if (password.length < 4) {
-      setError('Password must be at least 4 characters long.');
-      return;
-    }
-
+    if (!email || !password) { setError('Please fill in all fields.'); return; }
     setIsLoading(true);
-    setTimeout(() => {
-      const success = login(email, password);
+    try {
+      await login(email, password);
+      resetTo('home');
+    } catch (err: any) {
+      setError(getFirebaseError(err.code || ''));
+    } finally {
       setIsLoading(false);
-      if (success) {
-        resetTo('home');
-      } else {
-        setError('Invalid credentials.');
-      }
-    }, 800);
+    }
   };
 
   return (

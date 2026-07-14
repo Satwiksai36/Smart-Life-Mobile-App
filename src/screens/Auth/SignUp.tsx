@@ -12,31 +12,31 @@ export const SignUp: React.FC = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const getFirebaseError = (code: string): string => {
+    switch (code) {
+      case 'auth/email-already-in-use':  return 'This email is already registered. Try logging in.';
+      case 'auth/invalid-email':          return 'Please enter a valid email address.';
+      case 'auth/weak-password':          return 'Password should be at least 6 characters.';
+      case 'auth/network-request-failed': return 'Network error. Check your internet connection.';
+      default: return 'Sign up failed. Please try again.';
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-
-    if (!name || !email || !password || !confirmPassword) {
-      setError('Please fill in all fields.');
-      return;
-    }
-
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters long.');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setError('Passwords do not match.');
-      return;
-    }
-
+    if (!name || !email || !password || !confirmPassword) { setError('Please fill in all fields.'); return; }
+    if (password.length < 6) { setError('Password must be at least 6 characters.'); return; }
+    if (password !== confirmPassword) { setError('Passwords do not match.'); return; }
     setIsLoading(true);
-    setTimeout(() => {
-      signUp(name, email, password);
-      setIsLoading(false);
+    try {
+      await signUp(name, email, password);
       resetTo('home');
-    }, 800);
+    } catch (err: any) {
+      setError(getFirebaseError(err.code || ''));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

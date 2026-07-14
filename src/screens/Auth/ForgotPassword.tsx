@@ -4,28 +4,29 @@ import { useApp } from '../../context/AppContext';
 
 export const ForgotPassword: React.FC = () => {
   const { navigate } = useNavigateApp();
-  const { addNotification } = useApp();
+  const { addNotification, resetPassword } = useApp();
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setSuccess(false);
-
-    if (!email) {
-      setError('Please fill in your email address.');
-      return;
-    }
-
+    if (!email) { setError('Please enter your email address.'); return; }
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      await resetPassword(email);
       setSuccess(true);
-      addNotification("Password Reset Sent", `Recovery instructions sent to ${email}`, 'system');
-    }, 800);
+      addNotification('Password Reset Sent ✉️', `Recovery link sent to ${email}`, 'system');
+    } catch (err: any) {
+      if (err.code === 'auth/user-not-found') setError('No account found with this email.');
+      else if (err.code === 'auth/invalid-email') setError('Please enter a valid email address.');
+      else setError('Failed to send reset email. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
